@@ -21,30 +21,51 @@ something into an already-full cache.
 1. Suppose 16N is significantly larger than the size of our L3 cache. What is
 the memory-based AI of this code? (Hint: What is the memory-based AI of just the
 innermost loop?)
-
+# flops = 2N^3
+Every A and B entry has to be loaded into the cache since each requires 16 bytes
+There are thus N^2 * 2 * 16N = 32N^3 bytes transferred between memory + cache
+AI = 2/32 = 1/16
 
 2. Now suppose that the cache is substantially larger than 16N, but
 substantially smaller than 8N^2. What is the AI now?
-
+This means that we don't need to reload A every time, so only 16N^3 bytes transferred
+Thus the AI = 1/8
 
 3. Now suppose the cache is large enough to hold all of A, B, and C. What is the
 AI now? (Hint: Writing to a byte of memory not already in the cache incurs two
 memory transfers: one to move the data to the cache for writing, and one to move
 the written data back to main memory.)
+/ n^3
 
+Loading A and B once: 32N^2
+2 memory transfers per entry of C = 32N^2
+Overall AI: 2N^3 / 64N^2 = N / 32
 
 4. Cache overflowing. On my CPU (Intel i7-4700 HQ), L1, L2, and L3 caches are 32
 KB, 256 KB, and 6 MB respectively. What is the largest problem size N that will
 fit in each cache? What is the arithmetic intensity associated with each problem
 size?
 
+L1 Sqrt(32 * 2^10 / 16 / 3) \approx sqrt(683) \approx 26
+
+L2 Sqrt(256 * 2^10 / 16 / 3) \approx sqrt 5461 \approx 73
+
+L3 Sqrt(6 * 2^20 / 16 / 3) = sqrt(131072) \approx 362
+
+L1 AI: 26 / 32 = 0.8125
+L2 AI: 73 / 32 = 2.28
+L3 AI: 362 / 32 = 11.31
 
 5. My CPU has 4 cores, each of which can do 8 fused multiply-adds per cycle, has
 a clock rate of 2.4 GHz, and a memory bandwidth of 25.6 GB/s. At what arithmetic
 intensity does my machine become CPU-bound?
 
+4 cores * 8 adds per cycle * 2.4 * 10^9 cycles per second = 76.8 *10^9 adds per second
+76.8 / 25.6 GB/s = 3
+When the AI > 3, the machine becomes CPU-bound
 
 6. So, for what size range for N will naive matmul be CPU-bound on my machine?
-
+Size 362 for instance
 
 7. So, what will a plot of Flops/sec vs N look like?
+Flops will grow up to the point that they make AI > 3. Then they will decrease.

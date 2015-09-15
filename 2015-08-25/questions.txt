@@ -18,6 +18,13 @@ In practice, this took X time.  This includes
 Consider the following questions:
 
 1. What is a simple model that would predict this time?
+Time to start the process: a
+Time to compute row counts: b*n, where n is the max number of students in a row
+Time to gather counts: c*m, where m is the number of rows
+Time to do arithmetic: d*m, where m is the number of rows
+Total time: a + bn + cm + dm = a + bn + (c+d)m: O(m+n)
 2. What about a simple model to predict time for one person to count?
+Time to count students: b*m*n, where all defined as before
 3. How big should the class be before the parallel method takes less time?
-
+We would need a + bn + (c+d)m < bmn
+(size of class is mn)

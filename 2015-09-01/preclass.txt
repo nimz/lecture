@@ -12,11 +12,19 @@ with questions for class!
     in your calculation.  (We will return to this question again after
     we cover some computer architecture.)
     
+Done previous time
+
 2.  What is the approximate theoretical peak flop rate for your own machine?
+
+Done previous time
 
 3.  Suppose there are t tasks that can be executed in a pipeline
     with p stages.  What is the speedup over serial execution of the
     same tasks?
+
+Serial time: t*n, where n is the time taken by each task
+Parallel time: (n-1)/n + t*n/p
+Speedup: ((n-1)/n + t*n/p)/(t*n)
 
 4.  Consider the following list of tasks (assume they can't be pipelined):
 
@@ -31,6 +39,15 @@ with questions for class!
     a compiled application?  What is the minimum parallel time given
     an arbitrary number of processors?
 
+Minimum serial time:
+1 hr + 0.5 hr + 0.25 hr + 0.5 hr + 0.5 hr = 2.75 hrs
+Minimum parallel time:
+1 hr - GCC
+          0.25 hr - OpenMPI  0.25 hr - OpenMPI
+          0.25 hr - OpenBLAS 0.25 hr - LAPACK  0.25 hr - LAPACK
+                                                               0.5 hr - application
+1 + 0.75 + 0.5 = 2.25 hrs
+
 5.  Clone the membench repository from GitHub:
 
        git clone git@github.com:cornell-cs5220-f15/membench.git
@@ -43,6 +60,8 @@ with questions for class!
     timings-heat.pdf; what can you tell about the cache architecture
     on your machine from the plot?
 
+Need to install OpenMP
+
 6.  From the cloned repository, check out the totient branch:
 
        git checkout totient
@@ -51,6 +70,8 @@ with questions for class!
     If you prefer, you can also look at the files on GitHub.  Either
     way, repeat the exercise of problem 5.  What can you tell about
     the cache architecture of the totient nodes?
+
+Still need OpenMP
 
 7.  Implement the following three methods of computing the centroid
     of a million two-dimensional coordinates (double precision).
@@ -69,3 +90,5 @@ with questions for class!
     compiler.  To do this, run "module load cs5220" and run (e.g.)
 
         icc -o centroid centroid.c
+
+Option c is fastest

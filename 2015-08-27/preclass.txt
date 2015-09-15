@@ -8,13 +8,31 @@
     you should use a script to produce this plot, with both the serial
     fraction and the maximum number of cores as parameters.
 
+The proportion of the nonparallelized time that the program with n cores
+will be 0.1 + 0.9/n
+
+Plot script (MATLAB):
+max_cores = 128;
+cores = 1:max_cores;
+speedup = (0.1 + 0.9*cores.^-1).^-1;
+efficiency = speedup .* cores.^-1;
+plot(cores, speedup);
+figure
+plot(cores, efficiency);
+
 2.  Suppose a particular program can be partitioned into perfectly
     independent tasks, each of which takes time tau.  Tasks are
     set up, scheduled, and communicated to p workers at a (serial)
     central server; this takes an overhead time alpha per task.
     What is the theoretically achievable throughput (tasks/time)?
 
+p  / (alpha*p + tau)
+
 3.  Under what circumstances is it best to not tune?
+
+If it will take longer to tune than the amount of time you will save
+by tuning (e.g. script will only be run once, tuning results in very
+minor benefits)
 
 4.  The class cluster consists of eight nodes and fifteen Xeon Phi
     accelerator boards.  Based on an online search for information on
@@ -23,5 +41,18 @@
     you computed this, and give URLs for where you got the parameters
     in your calculation.  (We will return to this question again after
     we cover some computer architecture.)
-    
+   
+The Xeon Phi nodes have 6 cores, 12 threads, and a Base Frequency of 2.4 GHz
+2 flops/FMA * 4 FMA/vector FMA * 2 vector FMAs/cycle * 12 threads * 6 cores * 2.4 GHz = 2764.8 Gigaflops/s
+The Xeon Phi 7100 series coprocessor has specifications of 1.238 GhZ and 61 cores. [2]
+2 flops/FMA * 4 FMA/vector FMA * 2 vector FMAs/cycle * 61 cores * 1.238 GhZ = 1208.288 Gigaflops/s
+8*2764.8 GHz + 15 *1208.288 GHz = 40.24272 Teraflops 
+
+1. http://ark.intel.com/products/83352/Intel-Xeon-Processor-E5-2620-v3-15M-Cache-2_40-GHz
+2. http://ark.intel.com/products/series/75809
+
 5.  What is the approximate theoretical peak flop rate for your own machine?
+
+I have a MBP with a 2.7 GHz Intel Core i7 quad-core processor
+2 flops/FMA * 4 FMA/vector FMA * 2 vector FMAs/cycle * 4 cores * 2.7 * 10^9 cycles/s
+= 172.8 GFLOP/s for double precision, twice as many for single precision

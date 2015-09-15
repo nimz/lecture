@@ -3,12 +3,27 @@
    host cores are used, for the moment).  How do things change with
    the addition of the two Phi boards?
 
+307 Gigaflops
+Peak Memory transfer rate: 307/59 = 5.203
+
+Graph code (pseudocode)
+plot(1:5.203,1:5.203)
+hold on
+plot(5.203:100,5.203:100)
+
 2. What is the difference between two cores and one core with
    hyperthreading?
+
+One core with hyperthreading simulates two cores. However, two cores are physically
+distinct and have their own caches and so on.
 
 3. Do a Google search to find a picture of how memories are arranged
    on the Phi architecture.  Describe the setup briefly in your own
    words.  Is the memory access uniform or non-uniform?
+
+There are eight cores
+
+It is not uniform because processor memory is stored on specific processor packages.
 
 4. Consider the parallel dot product implementations suggested in the
    slides.  As a function of the number of processors, the size of the
@@ -17,3 +32,6 @@
    [Note that dot products have low arithmetic intensity -- the
     roofline model may be useful for reasoning about the peak
     performance for computing pieces of the dot product]
+
+Speedup will not help that much because the results still must be summed at the end
+/ Because of the low arithmetic intencity
