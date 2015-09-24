@@ -1,7 +1,9 @@
 0.  How much time did you spend on this pre-class exercise, and when?
+A few hours on Wednesday
 
 1.  What are one or two points that you found least clear in the
     9/24 slide decks (including the narration)?
+The parallel loops part
 
 2.  The omp_mc.c file in the demo subdirectory runs a Monte Carlo
     simulation to estimate the expected value of a uniform random
@@ -12,17 +14,23 @@
        terms of the number of trials (N), number of processors (p),
        time per trial (t_trial), and time to update the global
        counters in the critical section (t_update).
+       	N*t_trial/p + t_update*N/batch
 
     b) Run the code with a few different parameter values in order
        to estimate N, t_trial, and t_update for this code on
        a totient compute node.
+1 thread: 2.299969e-01 s
+2 threads: 1.177928e-01 s
+      speedup of nearly 2x
 
     c) Based on your model, suggest a strategy for choosing the batch
        size.  How might you generalize this strategy to automatically
        choose batch sizes for different types of computational
        experiments?
+       Just as large as possible??
 
 3.  The "OpenMP pitfalls" paper describes some common pitfalls (both
     performance and correctness) in OpenMP codes.  Go through the
     checklist in the paper for omp_mc.c.  What performance mistakes
     are there in the demonstration implementation?
+Read of shared variable without flush
