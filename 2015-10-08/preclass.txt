@@ -1,7 +1,13 @@
 0.  How much time did you spend on this pre-class exercise, and when?
+A few hours, Wednesday evening.
 
 1.  What are one or two points that you found least clear in the
     10/08 slide decks (including the narration)?
+
+Some of the operations (such as scatter gather, and alltoall) don't make
+a lot of sense to me. It is not clear what their usefulness is.
+I also can't tell whether Bcast is blocking (i.e. do non-root nodes wait
+for the Bcast call to complete?) It seems like it would be, but I don't think it was made clear.
 
 2.  Now that we are now basically a third of the way into the
     semester, and are (mostly) settled into the steady pace of things,
@@ -10,6 +16,15 @@
     particularly useful -- venting about the cluster, for example, is
     understandable but doesn't help me that much in adjusting!
 
+I really like the fact that there are slide decks before every lecture with
+narration included. It helps me learn much more thoroughly. However, the 
+pre-class questions are very long considering they are due before every class,
+and I rarely have enough time to spend on them. I would prefer that they
+be coalesced into independent homework assignments, rather than being due
+every day. This would ameliorate the workload significantly as I believe
+submitting large assignments twice a week is not that realistic for many 
+students.
+
 3.  The ring demo implements the protocol described in the particle
     systems slide deck from 9/15:
 
@@ -17,9 +32,16 @@
 
     a) In your own words, describe what ring.c is doing.
 
+It implements a particle interaction scheme, where every particle
+interacts with every other particle. The particles are split among processors.
+Each processor computes the interactions between the particles assigned to it,
+and then computes the interactions between its particles and the particles from other processors (and sends its own particle data to the next processor).
+
     b) How might you modify the code to have the same computational
        pattern, but using non-blocking communication rather than
        MPI_Sendrecv?  Note that according to the MPI standard,
        one isn't supposed to read from a buffer that is being
        handled by a non-blocking send, so it is probably necessary
        to use three temporary buffers rather than the current two.
+
+There could be an additional buffer added so that there are a total of three. One buffer would hold the particles whose interactions were currently being computed, another buffer would hold the particles whose calculations were just completed and would be sent to the next processor, and the third buffer would be where the particles to be received are. The latter two buffers would be paired in the sendrecv call. So, processors would be paired up and sendrecv to each other.
